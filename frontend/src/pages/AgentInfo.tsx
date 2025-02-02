@@ -16,19 +16,33 @@ interface AgentDetails {
 
 const AgentInfo: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const agentId = id ? parseInt(id, 10) : null;
   const [agent, setAgent] = useState<AgentDetails | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | undefined>();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/auth/agents/${id}`)
-      .then((res) => res.json())
-      .then((data: AgentDetails) => {
-        setAgent(data);
-        setAvatarPreview(data.avatar);
+    if (agentId !== null && !isNaN(agentId)) {
+      fetch(`http://localhost:5000/auth/agents/${agentId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token") || sessionStorage.getItem("token")}`,
+        },
       })
-      .catch((err) => console.error(err));
-  }, [id]);
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data: AgentDetails) => {
+          setAgent(data);
+          setAvatarPreview(data.avatar);
+        })
+        .catch((err) => console.error("Error fetching agent:", err));
+    }
+  }, [agentId]);  
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
