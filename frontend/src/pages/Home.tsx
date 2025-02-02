@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@heroui/react";
 import CardComponent from "../components/Card";
+import Sidebar from "../components/Sidebar";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -13,34 +13,30 @@ export default function Home() {
     }
   }, [navigate]);
 
-  return (
-    <div className="h-screen w-full flex">
-      {/* Sidebar */}
-      <div className="w-1/4 bg-blue-900 text-white flex flex-col py-8 px-6">
-        <div className="w-16 h-16 rounded-full bg-gray-300 mb-8"></div>
+  const handleCompanyInfoClick = () => {
+    console.log("Company Information clicked");
+  };
 
-        <Button
-          variant="solid"
-          className="w-full mb-4 py-3 rounded-lg bg-white text-blue-900 font-semibold hover:bg-gray-200 transition-all shadow-md"
-        >
-          Company Information
-        </Button>
-        <Button
-          variant="solid"
-          className="w-full py-3 rounded-lg bg-white text-blue-900 font-semibold hover:bg-gray-200 transition-all shadow-md"
-        >
-          Agents
-        </Button>
-      </div>
+  const handleAgentsClick = () => {
+    console.log("Agents clicked");
+  };
+
+  return (
+    <div className="h-screen w-full flex bg-gray-100 text-black dark:bg-gray-800 dark:text-gray-200 transition-colors duration-300">
+      {/* Sidebar Component */}
+      <Sidebar
+        onCompanyInfoClick={handleCompanyInfoClick}
+        onAgentsClick={handleAgentsClick}
+      />
 
       {/* Main Content */}
-      <div className="w-3/4 bg-gray-100 p-8">
-        <h1 className="text-4xl font-bold text-blue-700 mb-2">Welcome {`{companyName}`}</h1>
+      <div className="w-3/4 p-10">
+        <h1 className="text-4xl font-extrabold mb-3">Welcome {`{companyName}`}</h1>
         <hr className="mb-4" />
-        <p className="text-gray-600 mb-8">Company description</p>
+        <p className="mb-8">Here is your company overview and key resources to get started.</p>
 
         {/* Cards Section */}
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-8">
           <CardComponent
             imageSrc="https://via.placeholder.com/40"
             imageAlt="Company Logo"
