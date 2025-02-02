@@ -20,7 +20,7 @@ const AgentInfo: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false); // To toggle edit mode
 
   useEffect(() => {
-    fetch(`http://localhost:5000/agents/${id}`)
+    fetch(`http://localhost:5000/auth/agents/${id}`)
       .then((res) => res.json())
       .then((data: AgentDetails) => setAgent(data))
       .catch((err) => console.error(err));
