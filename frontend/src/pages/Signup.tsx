@@ -9,6 +9,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handlePhoneNumberInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +39,11 @@ export default function Signup() {
         throw new Error(data.message || "Signup failed");
       }
 
-      navigate("/");
+      setShowSuccess(true);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
 
     } catch (err: any) {
       setError(err.message);
@@ -54,6 +59,13 @@ export default function Signup() {
 
         {/* Display error messages */}
         {error && <p className="text-red-500 mb-4">{error}</p>}
+
+        {/* Success Pop-up */}
+        {showSuccess && (
+          <div className="fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg">
+            Signup successful! Redirecting to login page...
+          </div>
+        )}
 
         {/* Inputs */}
         <div className="flex flex-col gap-4">
