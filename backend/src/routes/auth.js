@@ -97,6 +97,48 @@ router.get('/agents/:id', authMiddleware, async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+  
+});router.get('/company-info', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.session?.user?.id || req.user?.userId;
+    const user = await User.findById(userId).lean();
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({
+      companyName: user.companyName,
+      phoneNumber: user.phoneNumber,
+      companyURI: user.companyURI || "",
+      companyDescription: user.companyDescription || "",
+    });
+  } catch (error) {
+    console.error("Error fetching company info:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.put('/company-info', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.session?.user?.id || req.user?.userId;
+    const { companyName, phoneNumber, companyURI, companyDescription } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { companyName, phoneNumber, companyURI, companyDescription },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({ message: "Company info updated successfully." });
+  } catch (error) {
+    console.error("Error updating company info:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 module.exports = router

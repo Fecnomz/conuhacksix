@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input, Button } from "@heroui/react";
 import Sidebar from "../components/Sidebar";
 
@@ -7,17 +7,54 @@ const CompanyInfo = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [companyURI, setCompanyURI] = useState("");
   const [companyDescription, setCompanyDescription] = useState("");
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/auth/company-info", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token") || sessionStorage.getItem("token")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCompanyName(data.companyName || "");
+        setPhoneNumber(data.phoneNumber || "");
+        setCompanyURI(data.companyURI || "");
+        setCompanyDescription(data.companyDescription || "");
+      })
+      .catch((err) => console.error("Error fetching company info:", err));
+  }, []);
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Company Information Submitted:", {
-      companyName,
-      phoneNumber,
-      companyURI,
-      companyDescription,
-    });
+    setError("");
+    setMessage("");
 
-    // TODO: Add API request to update company information
+    fetch("http://localhost:5000/auth/company-info", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token") || sessionStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        companyName,
+        phoneNumber,
+        companyURI,
+        companyDescription,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data.message) throw new Error("Update failed");
+        setMessage("Company information updated successfully.");
+      })
+      .catch((err) => {
+        setError("Failed to update company information.");
+        console.error(err);
+      });
   };
 
   return (
@@ -32,14 +69,17 @@ const CompanyInfo = () => {
         {/* Divider */}
         <div className="border-t border-gray-300 dark:border-gray-600 mb-6"></div>
 
+        {/* Success & Error Messages */}
+        {message && <p className="text-green-500 mb-4">{message}</p>}
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+
         <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
           {/* Company Name */}
-          <Input className="flex flex-col gap-4"
+          <Input
             label="Company Name"
             type="text"
             value={companyName}
             onChange={(e) => setCompanyName(e.target.value)}
-            placeholder="Enter your company name"
             required
           />
 
@@ -49,7 +89,6 @@ const CompanyInfo = () => {
             type="tel"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            placeholder="Enter your phone number"
             required
           />
 
@@ -59,7 +98,6 @@ const CompanyInfo = () => {
             type="url"
             value={companyURI}
             onChange={(e) => setCompanyURI(e.target.value)}
-            placeholder="Enter your MongoDB connection URI"
             required
           />
 
@@ -73,7 +111,6 @@ const CompanyInfo = () => {
               className="w-full p-3 border rounded-md dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-600"
               value={companyDescription}
               onChange={(e) => setCompanyDescription(e.target.value)}
-              placeholder="Enter your company description"
               rows={5}
               required
             ></textarea>
