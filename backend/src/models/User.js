@@ -1,11 +1,20 @@
 const mongoose = require('mongoose');
 
+const agentSchema = new mongoose.Schema({
+  id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+  avatar: { type: String, required: true },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  prompt: { type: String, required: true },
+  initialResponse: { type: String, required: true }
+});
+
 const userSchema = new mongoose.Schema({
   companyName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   phoneNumber: { type: String, required: true },
   password: { type: String, required: true },
-  creationDate: { type: Date, default: Date.now }
+  agents: [agentSchema]
 });
 
 const User = mongoose.model('User', userSchema);
