@@ -3,24 +3,20 @@ import { ThemeSwitch } from "../components/theme-switch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import image from "../assets/ConvoServeLogo.jpg";
 
 interface SidebarProps {
-  logoText?: string;
   onAgentsClick?: () => void;
 }
 
-export default function Sidebar({
-  logoText = "LOGO",
-  onAgentsClick,
-}: SidebarProps) {
-  const navigate = useNavigate(); // Initialize navigation
+export default function Sidebar({ onAgentsClick }: SidebarProps) {
+  const navigate = useNavigate();
 
   const handleCompanyInfoClick = () => {
-    navigate("/companyinfo"); // Redirect to /companyinfo page
+    navigate("/companyinfo");
   };
 
   const handleLogout = () => {
-    // Clear user data and redirect to login page
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
     navigate("/");
@@ -30,9 +26,9 @@ export default function Sidebar({
     <div className="w-1/4 h-full bg-blue-900 text-white flex flex-col py-10 px-6 shadow-lg relative">
       {/* Top Section */}
       <div>
-        {/* Logo Section */}
-        <div className="w-20 h-20 rounded-full bg-gray-400 mb-6 flex items-center justify-center text-2xl font-bold">
-          {logoText}
+        {/* Logo Section with Image */}
+        <div className="w-20 h-20 rounded-full mb-6 flex items-center justify-center">
+          <img src={image} alt="Company Logo" className="w-full h-full object-cover rounded-full" />
         </div>
 
         {/* Buttons */}
