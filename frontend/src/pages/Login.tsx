@@ -50,14 +50,14 @@ export default function Login() {
 
       <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-xl md:max-w-3xl">
         {/* Left Section (Image Placeholder) */}
-        <div className="hidden md:flex w-1/2 bg-blue-900 items-center justify-center">
+        <div className="hidden md:flex w-1/2 bg-blue-900 items-center justify-center" style={{userSelect: "none"}}>
           <img src={image} alt="Login image" className="w-full h-full object-cover" />
         </div>
 
         {/* Right Section (Login Card) */}
         <div className="w-full md:w-1/2 p-8">
-          <h1 className="text-2xl font-bold text-blue-700 mb-2">Login</h1>
-          <p className="text-gray-500 mb-6">Easier than speaking</p>
+          <h1 className="text-2xl font-bold text-blue-700 mb-2" style={{userSelect: "none"}}>Login</h1>
+          <p className="text-gray-500 mb-6" style={{userSelect: "none"}}>Easier than speaking</p>
 
           {error && <p className="text-red-500">{error}</p>}
 
@@ -76,11 +76,11 @@ export default function Login() {
                 checked={rememberMe}
                 onChange={() => setRememberMe(!rememberMe)}
               />
-              <label htmlFor="remember" className="text-sm text-gray-600">
+              <label htmlFor="remember" className="text-sm text-gray-600" style={{userSelect: "none"}}>
                 Remember Me
               </label>
             </div>
-            <a href="#" className="text-sm text-blue-500 hover:underline">
+            <a href="#" className="text-sm text-blue-500 hover:underline" style={{userSelect: "none"}}>
               Forgot your password?
             </a>
           </div>
@@ -89,13 +89,14 @@ export default function Login() {
           <button
             onClick={handleLogin}
             className="w-full mt-6 p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
+            style={{userSelect: "none"}}
           >
             LOGIN
           </button>
 
           {/* Create Account Link */}
           <div className="text-center mt-4">
-            <Link to="/signup" className="text-sm text-gray-500 hover:underline">
+            <Link to="/signup" className="text-sm text-gray-500 hover:underline" style={{userSelect: "none"}}>
               Create account
             </Link>
           </div>

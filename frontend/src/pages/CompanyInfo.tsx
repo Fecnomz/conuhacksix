@@ -75,7 +75,7 @@ const CompanyInfo = () => {
 
       {/* Main Content */}
       <div className="w-3/4 p-10">
-        <h1 className="text-3xl font-bold mb-4">Edit Company Information</h1>
+        <h1 className="text-3xl font-bold mb-4" style={{userSelect: "none"}}>Edit Company Information</h1>
 
         {/* Divider */}
         <div className="border-t border-gray-300 dark:border-gray-600 mb-6"></div>
@@ -126,11 +126,13 @@ const CompanyInfo = () => {
             variant="solid"
             className="bg-blue-600 text-white hover:bg-blue-700 transition-all mt-4"
             type="submit"
+            style={{userSelect: "none"}}
           >
             Save Changes
           </Button>
 
           <Alert className="fixed top-4 right-4 max-w-md w-full shadow-md"
+          style={{userSelect: "none"}}
           color="success"
           description={"Company information updated successfully."}
           isVisible={message ? true : false}
@@ -140,6 +142,7 @@ const CompanyInfo = () => {
         />
 
         <Alert className="fixed top-4 right-4 max-w-md w-full shadow-md"
+          style={{userSelect: "none"}}
           color="danger"
           description={"Failed to update company information."}
           isVisible={error ? true : false}

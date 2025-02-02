@@ -63,8 +63,8 @@ export default function Signup() {
       </div>
       <div className="flex flex-col bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-md p-8">
         {/* Sign-Up Form Header */}
-        <h1 className="text-2xl font-bold text-blue-700 mb-2">Create Account</h1>
-        <p className="text-gray-500 mb-6">Join us today!</p>
+        <h1 className="text-2xl font-bold text-blue-700 mb-2" style={{userSelect: "none"}}>Create Account</h1>
+        <p className="text-gray-500 mb-6" style={{userSelect: "none"}} >Join us today!</p>
 
         {/* Display error messages */}
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -72,6 +72,7 @@ export default function Signup() {
         {/* Success Pop-up */}
         {showSuccess && (
           <Alert className="fixed top-4 right-4 max-w-md w-full shadow-md"
+          style={{userSelect: "none"}}
           color="success"
           description={"Account created successfully. Redirecting to login page..."}
           isVisible={showSuccess}
@@ -94,13 +95,14 @@ export default function Signup() {
         <button
           onClick={handleSignup}
           className="w-full mt-6 p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
+          style={{userSelect: "none"}}
         >
           Sign Up
         </button>
 
         {/* Login Redirect */}
         <div className="text-center mt-4">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500" style={{userSelect: "none"}}>
             Already have an account?{" "}
             <Link to="/" className="text-blue-500 hover:underline">
               Log in here

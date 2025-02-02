@@ -60,7 +60,7 @@ const AgentsDashboard: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-full flex bg-gray-100 text-black dark:bg-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <div className="h-screen w-full flex bg-gray-100 text-black dark:bg-gray-800 dark:text-gray-200 transition-colors duration-300" style={{userSelect: "none"}}>
       <Sidebar />
       <div className="w-3/4 p-10">
         <h1 className="text-3xl font-bold mb-4">Agents Dashboard</h1>

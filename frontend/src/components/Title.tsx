@@ -13,6 +13,7 @@ const Title: React.FC<TitleProps> = ({ imageSrc }) => {
 
   return (
     <div
+      style={{userSelect: "none"}}
       className="flex items-center gap-4 cursor-pointer p-10"
       onClick={handleLogoClick}
     >

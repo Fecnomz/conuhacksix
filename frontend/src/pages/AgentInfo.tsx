@@ -124,6 +124,7 @@ const AgentInfo: React.FC = () => {
       {/* Alert Component */}
       <Alert
         className="fixed top-4 right-4 max-w-md w-full shadow-md"
+        style={{userSelect: "none"}}
         color={alert.type} // "success" or "danger"
         description={alert.message}
         isVisible={alert.visible}
@@ -133,7 +134,7 @@ const AgentInfo: React.FC = () => {
       />
 
       <div className="w-3/4 p-10">
-        <h1 className="text-3xl font-bold mb-4">Edit Agent Information</h1>
+        <h1 className="text-3xl font-bold mb-4" style={{userSelect: "none"}}>Edit Agent Information</h1>
         <div className="border-t border-gray-300 dark:border-gray-600 mb-6"></div>
 
         <form onSubmit={handleFormSubmit} className="flex flex-col gap-8">
@@ -142,12 +143,13 @@ const AgentInfo: React.FC = () => {
             {/* Avatar Preview and Upload */}
             <div className="flex items-center gap-4">
               <img
+                style={{userSelect: "none"}}
                 src={avatarPreview}
                 alt={agent.name}
                 className="w-20 h-20 rounded-full object-cover border"
               />
               <div>
-                <label htmlFor="avatar" className="block text-sm font-medium mb-1">
+                <label htmlFor="avatar" className="block text-sm font-medium mb-1" style={{userSelect: "none"}}>
                   Upload Avatar
                 </label>
                 <input
@@ -177,6 +179,7 @@ const AgentInfo: React.FC = () => {
                     variant="solid"
                     className="bg-green-600 text-white hover:bg-green-700 transition-all"
                     type="submit"
+                    style={{userSelect: "none"}}
                   >
                     Save Changes
                   </Button>
@@ -193,7 +196,7 @@ const AgentInfo: React.FC = () => {
                   }
                   disabled={!isEditing}
                 />
-                <label htmlFor="status" className="text-sm font-medium">
+                <label htmlFor="status" className="text-sm font-medium" style={{userSelect: "none"}}>
                   Active Status
                 </label>
               </div>

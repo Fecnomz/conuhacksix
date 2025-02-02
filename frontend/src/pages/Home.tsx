@@ -61,13 +61,14 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-full flex bg-gray-100 text-black dark:bg-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <div className="h-screen w-full flex bg-gray-100 text-black dark:bg-gray-800 dark:text-gray-200 transition-colors duration-300" style={{userSelect: "none"}}>
       <Sidebar />
       <div className="w-3/4 p-10">
         <h1 className="text-4xl font-extrabold mb-3">
           Welcome {user ? user.companyName : "Loading..."}
         </h1>
         <hr className="mb-4" />
+        <p className="mb-8">{user?.companyDescription ? user.companyDescription: "Your company description here!"}</p>
         <h2 className="text-2xl font-extrabold mb-3">
           Active Agents
         </h2>

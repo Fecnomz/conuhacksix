@@ -27,7 +27,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="w-1/4 h-full bg-blue-900 text-white flex flex-col py-10 px-6 shadow-lg relative">
+    <div className="w-1/4 h-full bg-blue-900 text-white flex flex-col py-10 px-6 shadow-lg relative" style={{userSelect: "none"}}>
       {/* Top Section */}
       <div className="flex items-center gap-4 mb-8 cursor-pointer" onClick={handleLogoClick}>
         {/* Logo */}
