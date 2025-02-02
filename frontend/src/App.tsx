@@ -5,6 +5,7 @@ import Signup from "@/pages/Signup";
 import Home from "@/pages/Home";
 import CompanyInfo from "@/pages/CompanyInfo";
 import AgentInfo from "@/pages/AgentInfo";
+import AgentsDashboard from "./pages/AgentsDashboard";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/home" element={<Home />} />
       <Route path="/companyinfo" element={<CompanyInfo />} />
       <Route path="/agentinfo/:id" element={<AgentInfo />} />
+      <Route path="/agentsdashboard" element={<AgentsDashboard />} />
     </Routes>
   );
 }
