@@ -135,7 +135,7 @@ const AgentInfo: React.FC = () => {
               value={agent.phoneNumber}
               onChange={(e) => setAgent({ ...agent, phoneNumber: e.target.value })}
               placeholder="Enter phone number"
-              disabled={!isEditing}
+              disabled
               required
             />
           </div>
