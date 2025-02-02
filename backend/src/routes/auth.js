@@ -20,7 +20,9 @@ router.post('/signup', async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ companyName, email, phoneNumber, password: hashedPassword });
+        const agents = [];
+        const companyURI = "";
+        const newUser = new User({ companyName, email, phoneNumber, password: hashedPassword, agents, companyURI });
         await newUser.save();
 
         res.status(201).json({ message: 'Account successfully registered.' });

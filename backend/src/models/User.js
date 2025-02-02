@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phoneNumber: { type: String, required: true },
   password: { type: String, required: true },
-  agents: [agentSchema]
+  agents: [agentSchema],
+  companyURI: { type: String, required: false }
 });
 
 const User = mongoose.model('User', userSchema);

@@ -1,10 +1,48 @@
+import { useState } from "react";
 import { Input } from "@heroui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup() {
-  // Function to restrict non-numeric input
-  const handlePhoneNumberInput = (e: React.FormEvent<HTMLInputElement>) => {
-    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, ""); // Replace non-digit characters
+  const [companyName, setCompanyName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handlePhoneNumberInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value.replace(/\D/g, ""));
+  };
+
+  const handleSignup = async () => {
+    setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ companyName, email, phoneNumber, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Signup failed");
+      }
+
+      navigate("/");
+
+    } catch (err: any) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -14,21 +52,23 @@ export default function Signup() {
         <h1 className="text-2xl font-bold text-blue-700 mb-2">Create Account</h1>
         <p className="text-gray-500 mb-6">Join us today!</p>
 
+        {/* Display error messages */}
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+
         {/* Inputs */}
         <div className="flex flex-col gap-4">
-          <Input label="Company Name" type="text" />
-          <Input label="Email" type="email" />
-          <Input 
-            label="Phone Number" 
-            type="tel" 
-            onInput={handlePhoneNumberInput} 
-          />
-          <Input label="Password" type="password" />
-          <Input label="Confirm Password" type="password" />
+          <Input label="Company Name" type="text" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+          <Input label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input label="Phone Number" type="tel" value={phoneNumber} onChange={handlePhoneNumberInput} />
+          <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input label="Confirm Password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
         </div>
 
         {/* Sign-Up Button */}
-        <button className="w-full mt-6 p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700">
+        <button
+          onClick={handleSignup}
+          className="w-full mt-6 p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
+        >
           Sign Up
         </button>
 
