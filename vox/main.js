@@ -56,7 +56,7 @@ async function loadClientDatabaseAndPrompt() {
   return { CLIENT_DATABASE: allData, DB_PROMPT: dbPrompt, INIT_PROMPT: initialPrompt };
 }
 
-const VOICE = 'alloy';
+const VOICE = 'ash';
 const PORT = process.env.PORT || 5050;
 
 const LOG_EVENT_TYPES = [
