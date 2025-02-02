@@ -55,9 +55,27 @@ const AgentInfo: React.FC = () => {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Updated agent details:", agent);
-    // TODO: Add an API call to upload the file and update the agent's information.
-  };
+  
+    if (!agent) return;
+  
+    fetch(`http://localhost:5000/auth/agents/${agent.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token") || sessionStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(agent),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to update agent.");
+        return res.json();
+      })
+      .then((data) => {
+        console.log("✅ Agent updated:", data.agent);
+        setIsEditing(false);
+      })
+      .catch((err) => console.error("Error updating agent:", err));
+  };  
 
   if (!agent) {
     return <div>Loading...</div>;

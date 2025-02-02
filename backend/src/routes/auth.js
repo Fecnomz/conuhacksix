@@ -147,4 +147,33 @@ router.put('/company-info', authMiddleware, async (req, res) => {
   }
 });
 
+router.put('/agents/:id', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.user?.userId;
+    const agentId = parseInt(req.params.id, 10);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized: No user ID found." });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const agentIndex = user.agents.findIndex(agent => agent.id === agentId);
+    if (agentIndex === -1) {
+      return res.status(404).json({ message: "Agent not found." });
+    }
+
+    Object.assign(user.agents[agentIndex], req.body);
+
+    await user.save();
+
+    res.status(200).json({ message: "Agent updated successfully", agent: user.agents[agentIndex] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router
