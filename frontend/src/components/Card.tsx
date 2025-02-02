@@ -20,8 +20,11 @@ export default function CardComponent({
   onClick,
 }: CardProps) {
   return (
-    <button onClick={onClick} className="w-full">
-      <Card className="max-w-[400px] relative transition-transform duration-300 hover:scale-105 cursor-pointer shadow-md hover:shadow-lg">
+    <div
+      onClick={onClick}
+      className="w-full cursor-pointer transition-transform duration-300 hover:scale-105"
+    >
+      <Card className="max-w-[400px] relative shadow-md hover:shadow-lg">
         <CardHeader className="flex gap-3 relative">
           <div className="relative">
             <Image alt={imageAlt} height={40} radius="full" src={imageSrc} width={40} />
@@ -31,7 +34,7 @@ export default function CardComponent({
           </div>
           <div className="flex flex-col">
             <p className="text-md font-bold">{title}</p>
-            <p className="text-small text-default-500">{subtitle}</p>
+            <p className="text-small text-gray-500">{subtitle}</p>
           </div>
         </CardHeader>
         <Divider />
@@ -39,6 +42,6 @@ export default function CardComponent({
           <p>{description}</p>
         </CardBody>
       </Card>
-    </button>
+    </div>
   );
 }

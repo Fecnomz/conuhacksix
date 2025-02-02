@@ -1,59 +1,63 @@
-import React, { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import CardComponent from "../components/Card"
-import Sidebar from "../components/Sidebar"
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import CardComponent from "../components/Card";
+import Sidebar from "../components/Sidebar";
 
 interface Agent {
-  id: string
-  avatar: string
-  name: string
-  description: string
-  prompt: string
-  initialResponse: string
-  status: boolean
+  id: string;
+  avatar: string;
+  name: string;
+  description: string;
+  prompt: string;
+  initialResponse: string;
+  status: boolean;
 }
 
 interface User {
-  _id: string
-  companyName: string
-  email: string
-  phoneNumber: string
-  agents: Agent[]
-  companyURI?: string
-  companyDescription?: string
+  _id: string;
+  companyName: string;
+  email: string;
+  phoneNumber: string;
+  agents: Agent[];
+  companyURI?: string;
+  companyDescription?: string;
 }
 
 const Home: React.FC = () => {
-  const navigate = useNavigate()
-  const [user, setUser] = useState<User | null>(null)
-  const [activeAgents, setActiveAgents] = useState<Agent[]>([])
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [activeAgents, setActiveAgents] = useState<Agent[]>([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token")
+    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
     if (!token) {
-      navigate("/")
-      return
+      navigate("/");
+      return;
     }
     fetch("http://localhost:5000/auth/profile", {
       method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((data: { user: User }) => {
         if (data.user) {
-          setUser(data.user)
+          setUser(data.user);
           if (Array.isArray(data.user.agents)) {
-            const filteredAgents = data.user.agents.filter(agent => agent.status === true)
-            setActiveAgents(filteredAgents)
+            const filteredAgents = data.user.agents.filter((agent) => agent.status);
+            setActiveAgents(filteredAgents);
           }
         }
       })
-      .catch(err => console.error(err))
-  }, [navigate])
+      .catch((err) => console.error(err));
+  }, [navigate]);
+
+  const handleCardClick = (agentId: string) => {
+    navigate(`/agentinfo/${agentId}`);
+  };
 
   return (
     <div className="h-screen w-full flex bg-gray-100 text-black dark:bg-gray-800 dark:text-gray-200 transition-colors duration-300">
@@ -69,7 +73,7 @@ const Home: React.FC = () => {
             : "Here is your company overview and key resources to get started."}
         </p>
         <div className="grid grid-cols-3 gap-8">
-          {activeAgents.map(agent => (
+          {activeAgents.map((agent) => (
             <CardComponent
               key={agent.id}
               imageSrc={agent.avatar}
@@ -78,12 +82,13 @@ const Home: React.FC = () => {
               subtitle={agent.prompt}
               description={agent.description}
               badgeColorClass="bg-green-500"
+              onClick={() => handleCardClick(agent.id)}
             />
           ))}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
