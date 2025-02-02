@@ -98,7 +98,6 @@ const CompanyInfo = () => {
             type="url"
             value={companyURI}
             onChange={(e) => setCompanyURI(e.target.value)}
-            required
           />
 
           {/* Company Description */}
@@ -112,7 +111,6 @@ const CompanyInfo = () => {
               value={companyDescription}
               onChange={(e) => setCompanyDescription(e.target.value)}
               rows={5}
-              required
             ></textarea>
           </div>
 
