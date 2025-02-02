@@ -79,4 +79,24 @@ router.get('/profile', authMiddleware, async (req, res) => {
   }
 })
 
+router.get('/agents/:id', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.session && req.session.user ? req.session.user.id : req.user.userId;
+    const user = await User.findById(userId).lean();
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    const agent = user.agents.find(agent => agent._id.toString() === req.params.id);
+    if (!agent) {
+      return res.status(404).json({ message: 'Agent not found.' });
+    }
+
+    res.status(200).json(agent);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router
