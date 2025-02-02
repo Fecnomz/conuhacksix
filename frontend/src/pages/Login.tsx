@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Input } from "@heroui/react";
 import { Link, useNavigate } from "react-router-dom";
 import image from "../assets/ConvoServeLogin.jpg";
+import Title from "../components/Title"; // Import Title
+import image2 from "../assets/ConvoServeLogo.jpg";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -40,16 +42,16 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-gray-100 p-4">
+    <div className="h-screen w-full flex flex-col items-center justify-center bg-gray-100 p-4 relative">
+      {/* Title Component Positioned at Top Left */}
+      <div className="absolute top-0 left-0">
+        <Title imageSrc={image2} />
+      </div>
+
       <div className="flex flex-col md:flex-row bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-xl md:max-w-3xl">
-        
         {/* Left Section (Image Placeholder) */}
         <div className="hidden md:flex w-1/2 bg-blue-900 items-center justify-center">
-          <img
-              src={image}
-              alt="Login image"
-              className="w-full h-full object-cover"
-          />
+          <img src={image} alt="Login image" className="w-full h-full object-cover" />
         </div>
 
         {/* Right Section (Login Card) */}

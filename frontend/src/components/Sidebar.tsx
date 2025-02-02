@@ -74,8 +74,8 @@ export default function Sidebar() {
 
       {/* Footer Section aligned with ThemeSwitch */}
       <div className="absolute bottom-4 left-4 text-sm text-gray-300">
-        <p>&copy; 2025 Company Name</p>
-        <p>All Rights Reserved</p>
+        <p>Made with 💖</p>
+        <p>by Team ConvoServe</p>
       </div>
     </div>
   );

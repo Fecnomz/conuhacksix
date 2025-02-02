@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Alert, Input } from "@heroui/react";
 import { Link, useNavigate } from "react-router-dom";
+import Title from "@/components/Title";
+import image2 from "../assets/ConvoServeLogo.jpg";
 
 export default function Signup() {
   const [companyName, setCompanyName] = useState("");
@@ -56,6 +58,9 @@ export default function Signup() {
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-gray-100 p-4">
+      <div className="absolute top-0 left-0">
+        <Title imageSrc={image2} />
+      </div>
       <div className="flex flex-col bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-md p-8">
         {/* Sign-Up Form Header */}
         <h1 className="text-2xl font-bold text-blue-700 mb-2">Create Account</h1>

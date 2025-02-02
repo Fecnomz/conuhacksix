@@ -7,7 +7,8 @@ const agentSchema = new mongoose.Schema({
   description: { type: String, required: true },
   prompt: { type: String, required: true },
   initialResponse: { type: String, required: true },
-  status: { type: Boolean, required: true }
+  status: { type: Boolean, required: true },
+  phoneNumber: { type: String, required: false }
 })
 
 const userSchema = new mongoose.Schema({

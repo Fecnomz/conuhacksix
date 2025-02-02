@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Input, Button } from "@heroui/react";
+import { Input, Button, Alert } from "@heroui/react";
 import Sidebar from "../components/Sidebar";
 
 const CompanyInfo = () => {
@@ -28,6 +28,11 @@ const CompanyInfo = () => {
       .catch((err) => console.error("Error fetching company info:", err));
   }, []);
 
+  const handlePhoneNumberInput = (e: React.FormEvent<HTMLInputElement>) => {
+    e.currentTarget.value = e.currentTarget.value.replace(/\D/g, ""); // Allow only digits
+    setPhoneNumber(e.currentTarget.value);
+  };
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -50,10 +55,16 @@ const CompanyInfo = () => {
       .then((data) => {
         if (!data.message) throw new Error("Update failed");
         setMessage("Company information updated successfully.");
+        setTimeout(() => {
+            setMessage("");
+          }, 3000);
       })
       .catch((err) => {
         setError("Failed to update company information.");
         console.error(err);
+        setTimeout(() => {
+            setError("");
+          }, 3000);
       });
   };
 
@@ -68,10 +79,6 @@ const CompanyInfo = () => {
 
         {/* Divider */}
         <div className="border-t border-gray-300 dark:border-gray-600 mb-6"></div>
-
-        {/* Success & Error Messages */}
-        {message && <p className="text-green-500 mb-4">{message}</p>}
-        {error && <p className="text-red-500 mb-4">{error}</p>}
 
         <form onSubmit={handleFormSubmit} className="flex flex-col gap-6">
           {/* Company Name */}
@@ -88,7 +95,7 @@ const CompanyInfo = () => {
             label="Phone Number"
             type="tel"
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onInput={handlePhoneNumberInput}
             required
           />
 
@@ -122,6 +129,24 @@ const CompanyInfo = () => {
           >
             Save Changes
           </Button>
+
+          <Alert className="fixed top-4 right-4 max-w-md w-full shadow-md"
+          color="success"
+          description={"Company information updated successfully."}
+          isVisible={message ? true : false}
+          title={"Success!"}
+          variant="faded"
+          onClose={() => setMessage("")}
+        />
+
+        <Alert className="fixed top-4 right-4 max-w-md w-full shadow-md"
+          color="danger"
+          description={"Failed to update company information."}
+          isVisible={error ? true : false}
+          title={"Error!"}
+          variant="faded"
+          onClose={() => setMessage("")}
+        />
         </form>
       </div>
     </div>

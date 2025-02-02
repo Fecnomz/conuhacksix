@@ -11,6 +11,7 @@ interface Agent {
   prompt: string;
   initialResponse: string;
   status: boolean;
+  phoneNumber: string;
 }
 
 interface User {
@@ -79,7 +80,7 @@ const Home: React.FC = () => {
               imageSrc={agent.avatar}
               imageAlt={agent.name}
               title={agent.name}
-              subtitle={agent.prompt}
+              subtitle={agent.phoneNumber}
               description={agent.description}
               badgeColorClass="bg-green-500"
               onClick={() => handleCardClick(agent.id)}
