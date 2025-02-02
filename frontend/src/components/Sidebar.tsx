@@ -22,12 +22,16 @@ export default function Sidebar({ onAgentsClick }: SidebarProps) {
     navigate("/");
   };
 
+  const handleLogoClick = () => {
+    navigate("/home");
+  };
+
   return (
     <div className="w-1/4 h-full bg-blue-900 text-white flex flex-col py-10 px-6 shadow-lg relative">
       {/* Top Section */}
       <div>
         {/* Logo Section with Image */}
-        <div className="w-20 h-20 rounded-full mb-6 flex items-center justify-center">
+        <div className="w-20 h-20 rounded-full mb-6 flex items-center justify-center" onClick={handleLogoClick}>
           <img src={image} alt="Company Logo" className="w-full h-full object-cover rounded-full" />
         </div>
 
