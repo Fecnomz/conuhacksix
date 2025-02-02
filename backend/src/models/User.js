@@ -6,7 +6,8 @@ const agentSchema = new mongoose.Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   prompt: { type: String, required: true },
-  initialResponse: { type: String, required: true }
+  initialResponse: { type: String, required: true },
+  status: { type: Boolean, required: true }
 });
 
 const userSchema = new mongoose.Schema({
