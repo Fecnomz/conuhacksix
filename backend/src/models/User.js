@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const agentSchema = new mongoose.Schema({
   id: { type: mongoose.Schema.Types.ObjectId, auto: true },
@@ -8,7 +8,7 @@ const agentSchema = new mongoose.Schema({
   prompt: { type: String, required: true },
   initialResponse: { type: String, required: true },
   status: { type: Boolean, required: true }
-});
+})
 
 const userSchema = new mongoose.Schema({
   companyName: { type: String, required: true },
@@ -16,8 +16,9 @@ const userSchema = new mongoose.Schema({
   phoneNumber: { type: String, required: true },
   password: { type: String, required: true },
   agents: [agentSchema],
-  companyURI: { type: String, required: false }
-});
+  companyURI: { type: String, required: false },
+  companyDescription : { type: String, required: false }
+})
 
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+const User = mongoose.model('User', userSchema)
+module.exports = User

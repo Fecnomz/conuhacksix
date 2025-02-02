@@ -25,13 +25,10 @@ export default function CardComponent({
         <CardHeader className="flex gap-3 relative">
           <div className="relative">
             <Image alt={imageAlt} height={40} radius="full" src={imageSrc} width={40} />
-            {/* Circular Badge */}
             <div
-              className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-white ${badgeColorClass}`}
+              className={`absolute bottom-0 right-0 transform translate-x-1/4 translate-y-1/4 z-10 w-3.5 h-3.5 rounded-full border-2 border-white ${badgeColorClass}`}
             ></div>
           </div>
-
-          {/* Title and Subtitle */}
           <div className="flex flex-col">
             <p className="text-md font-bold">{title}</p>
             <p className="text-small text-default-500">{subtitle}</p>
