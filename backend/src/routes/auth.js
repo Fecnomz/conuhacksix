@@ -81,24 +81,30 @@ router.get('/profile', authMiddleware, async (req, res) => {
 
 router.get('/agents/:id', authMiddleware, async (req, res) => {
   try {
-    const userId = req.session && req.session.user ? req.session.user.id : req.user.userId;
-    const user = await User.findById(userId).lean();
+    const userId = req.session?.user?.id || req.user?.userId;
+    const agentId = parseInt(req.params.id, 10);
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
+    if (isNaN(agentId)) {
+      return res.status(400).json({ message: "Invalid Agent ID format." });
     }
 
-    const agent = user.agents.find(agent => agent._id.toString() === req.params.id);
+    const user = await User.findById(userId).lean();
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const agent = user.agents.find(agent => agent.id === agentId);
     if (!agent) {
-      return res.status(404).json({ message: 'Agent not found.' });
+      return res.status(404).json({ message: "Agent not found." });
     }
 
     res.status(200).json(agent);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-  
-});router.get('/company-info', authMiddleware, async (req, res) => {
+});
+
+router.get('/company-info', authMiddleware, async (req, res) => {
   try {
     const userId = req.session?.user?.id || req.user?.userId;
     const user = await User.findById(userId).lean();

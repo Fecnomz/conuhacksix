@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const agentSchema = new mongoose.Schema({
-  id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+  id: { type: Number, required: true, unique: true},
   avatar: { type: String, required: true },
   name: { type: String, required: true },
   description: { type: String, required: true },
