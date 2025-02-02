@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 
 dotenv.config();
 
-const LINKED_ACCOUNT = "paul@hardware.com";
+const LINKED_ACCOUNT = "bob@hardware.com";
 var AGENT_NAME = "";
 var COMPANY_NAME = "";
 const { OPENAI_API_KEY, MONGO_URI } = process.env;
