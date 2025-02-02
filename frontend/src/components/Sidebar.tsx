@@ -5,15 +5,15 @@ import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import image from "../assets/ConvoServeLogo.jpg";
 
-interface SidebarProps {
-  onAgentsClick?: () => void;
-}
-
-export default function Sidebar({ onAgentsClick }: SidebarProps) {
+export default function Sidebar() {
   const navigate = useNavigate();
 
   const handleCompanyInfoClick = () => {
     navigate("/companyinfo");
+  };
+
+  const handleAgentsClick = () => {
+    navigate("/agentsdashboard");
   };
 
   const handleLogout = () => {
@@ -36,9 +36,7 @@ export default function Sidebar({ onAgentsClick }: SidebarProps) {
         </div>
 
         {/* Title */}
-        <h2 className="text-2xl font-bold px-4 py-2">
-          ConvoServe
-        </h2>
+        <h2 className="text-2xl font-bold px-4 py-2">ConvoServe</h2>
       </div>
 
       {/* Buttons */}
@@ -52,7 +50,7 @@ export default function Sidebar({ onAgentsClick }: SidebarProps) {
       <Button
         variant="solid"
         className="w-full py-2.5 rounded-md bg-white text-blue-800 font-medium hover:bg-gray-100 transition-all shadow-sm mt-12"
-        onPress={onAgentsClick}
+        onPress={handleAgentsClick}
       >
         Agents
       </Button>
