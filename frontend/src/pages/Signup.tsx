@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Input } from "@heroui/react";
+import { Alert, Input } from "@heroui/react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup() {
@@ -50,6 +50,10 @@ export default function Signup() {
     }
   };
 
+  function setIsVisible(arg0: boolean): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <div className="h-screen w-full flex items-center justify-center bg-gray-100 p-4">
       <div className="flex flex-col bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-md p-8">
@@ -62,9 +66,14 @@ export default function Signup() {
 
         {/* Success Pop-up */}
         {showSuccess && (
-          <div className="fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg">
-            Signup successful! Redirecting to login page...
-          </div>
+          <Alert className="fixed top-4 right-4 max-w-md w-full shadow-md"
+          color="success"
+          description={"Account created successfully. Redirecting to login page..."}
+          isVisible={showSuccess}
+          title={"Success!"}
+          variant="faded"
+          onClose={() => setIsVisible(false)}
+        />
         )}
 
         {/* Inputs */}
