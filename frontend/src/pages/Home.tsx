@@ -57,10 +57,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="h-screen w-full flex bg-gray-100 text-black dark:bg-gray-800 dark:text-gray-200 transition-colors duration-300">
-      <Sidebar
-        onCompanyInfoClick={() => console.log("Company Information clicked")}
-        onAgentsClick={() => console.log("Agents clicked")}
-      />
+      <Sidebar />
       <div className="w-3/4 p-10">
         <h1 className="text-4xl font-extrabold mb-3">
           Welcome {user ? user.companyName : "Loading..."}
