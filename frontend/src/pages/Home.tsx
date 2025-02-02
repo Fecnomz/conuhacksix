@@ -68,11 +68,9 @@ const Home: React.FC = () => {
           Welcome {user ? user.companyName : "Loading..."}
         </h1>
         <hr className="mb-4" />
-        <p className="mb-8">
-          {user && user.companyDescription
-            ? user.companyDescription
-            : "Here is your company overview and key resources to get started."}
-        </p>
+        <h2 className="text-2xl font-extrabold mb-3">
+          Active Agents
+        </h2>
         <div className="grid grid-cols-3 gap-8">
           {activeAgents.map((agent) => (
             <CardComponent

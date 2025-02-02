@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Input, Button } from "@heroui/react";
+import { Input, Button, Alert } from "@heroui/react"; // make sure Alert is imported from your UI library
 import Sidebar from "../components/Sidebar";
 
 interface AgentDetails {
@@ -14,12 +14,25 @@ interface AgentDetails {
   status: boolean;
 }
 
+interface AlertState {
+  visible: boolean;
+  message: string;
+  type: "success" | "danger";
+  title: string;
+}
+
 const AgentInfo: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const agentId = id ? parseInt(id, 10) : null;
   const [agent, setAgent] = useState<AgentDetails | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | undefined>();
+  const [alert, setAlert] = useState<AlertState>({
+    visible: false,
+    message: "",
+    type: "success",
+    title: "",
+  });
 
   useEffect(() => {
     if (agentId !== null && !isNaN(agentId)) {
@@ -27,7 +40,9 @@ const AgentInfo: React.FC = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token") || sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${
+            localStorage.getItem("token") || sessionStorage.getItem("token")
+          }`,
         },
       })
         .then((res) => {
@@ -42,7 +57,7 @@ const AgentInfo: React.FC = () => {
         })
         .catch((err) => console.error("Error fetching agent:", err));
     }
-  }, [agentId]);  
+  }, [agentId]);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -55,14 +70,16 @@ const AgentInfo: React.FC = () => {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!agent) return;
-  
+
     fetch(`http://localhost:5000/auth/agents/${agent.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token") || sessionStorage.getItem("token")}`,
+        Authorization: `Bearer ${
+          localStorage.getItem("token") || sessionStorage.getItem("token")
+        }`,
       },
       body: JSON.stringify(agent),
     })
@@ -72,10 +89,30 @@ const AgentInfo: React.FC = () => {
       })
       .then((data) => {
         console.log("✅ Agent updated:", data.agent);
+        setAlert({
+          visible: true,
+          message: "Agent updated successfully.",
+          type: "success",
+          title: "Success!",
+        });
         setIsEditing(false);
+        setTimeout(() => {
+          setAlert({ visible: false, message: "", type: "success", title: "" });
+        }, 3000);
       })
-      .catch((err) => console.error("Error updating agent:", err));
-  };  
+      .catch((err) => {
+        console.error("Error updating agent:", err);
+        setAlert({
+          visible: true,
+          message: "Failed to update agent.",
+          type: "danger",
+          title: "Error!",
+        });
+        setTimeout(() => {
+          setAlert({ visible: false, message: "", type: "success", title: "" });
+        }, 3000);
+      });
+  };
 
   if (!agent) {
     return <div>Loading...</div>;
@@ -84,6 +121,17 @@ const AgentInfo: React.FC = () => {
   return (
     <div className="h-screen w-full flex bg-gray-100 text-black dark:bg-gray-800 dark:text-gray-200 transition-colors duration-300">
       <Sidebar />
+      {/* Alert Component */}
+      <Alert
+        className="fixed top-4 right-4 max-w-md w-full shadow-md"
+        color={alert.type} // "success" or "danger"
+        description={alert.message}
+        isVisible={alert.visible}
+        title={alert.title}
+        variant="faded"
+        onClose={() => setAlert({ visible: false, message: "", type: "success", title: "" })}
+      />
+
       <div className="w-3/4 p-10">
         <h1 className="text-3xl font-bold mb-4">Edit Agent Information</h1>
         <div className="border-t border-gray-300 dark:border-gray-600 mb-6"></div>
@@ -140,7 +188,9 @@ const AgentInfo: React.FC = () => {
                   type="checkbox"
                   id="status"
                   checked={agent.status}
-                  onChange={(e) => setAgent({ ...agent, status: e.target.checked })}
+                  onChange={(e) =>
+                    setAgent({ ...agent, status: e.target.checked })
+                  }
                   disabled={!isEditing}
                 />
                 <label htmlFor="status" className="text-sm font-medium">
