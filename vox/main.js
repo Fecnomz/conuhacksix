@@ -7,6 +7,9 @@ import mongoose from 'mongoose';
 
 dotenv.config();
 
+const LINKED_ACCOUNT = "paul@hardware.com";
+var AGENT_NAME = "";
+var COMPANY_NAME = "";
 const { OPENAI_API_KEY, MONGO_URI } = process.env;
 
 if (!OPENAI_API_KEY) {
@@ -24,19 +27,21 @@ async function loadClientDatabaseAndPrompt() {
   const mainConn = await mongoose.createConnection(MONGO_URI).asPromise();
 
   const User = mainConn.model('User', new mongoose.Schema({}, { strict: false }), 'users');
-  const user = await User.findOne({ companyName: "Paul's Hardware" }).lean();
+  const user = await User.findOne({ email: LINKED_ACCOUNT }).lean();
   if (!user) {
-    console.error("User with companyName 'Paul's Hardware' not found.");
+    console.error("User with email not found.");
     process.exit(1);
   }
 
-  const agentCarlos = (user.agents || []).find(agent => agent.name === "Carlos");
-  if (!agentCarlos || !agentCarlos.prompt) {
-    console.error("Agent 'Carlos' with a prompt not found.");
+  const foundAgent = (user.agents[0] || []);
+  if (!foundAgent || !foundAgent.prompt) {
+    console.error("Agent with a prompt not found.");
     process.exit(1);
   }
-  const dbPrompt = agentCarlos.prompt;
-
+  const dbPrompt = foundAgent.prompt;
+  const initialPrompt = foundAgent.initialResponse;
+  AGENT_NAME = foundAgent.name;
+  COMPANY_NAME = user.companyName;
   const companyURI = user.companyURI;
   await mainConn.close();
 
@@ -48,7 +53,7 @@ async function loadClientDatabaseAndPrompt() {
     allData = allData.concat(docs);
   }
   await clientConn.close();
-  return { CLIENT_DATABASE: allData, DB_PROMPT: dbPrompt };
+  return { CLIENT_DATABASE: allData, DB_PROMPT: dbPrompt, INIT_PROMPT: initialPrompt };
 }
 
 const VOICE = 'alloy';
@@ -70,6 +75,7 @@ const SHOW_TIMING_MATH = false;
 var SYSTEM_PROMPT = ""; 
 var CLIENT_DATABASE = [];
 var DB_PROMPT = "";
+var INIT_PROMPT = "";
 
 const fastify = Fastify();
 fastify.register(fastifyFormBody);
@@ -80,10 +86,10 @@ fastify.get('/', async (request, reply) => {
 });
 
 fastify.all('/incoming-call', async (request, reply) => {
-  ({ CLIENT_DATABASE, DB_PROMPT } = await loadClientDatabaseAndPrompt());
+  ({ CLIENT_DATABASE, DB_PROMPT, INIT_PROMPT} = await loadClientDatabaseAndPrompt());
 
   SYSTEM_PROMPT = `
-  AI Customer Service Agent for Paul's Hardware.
+  Your name is ${AGENT_NAME} and you are a Customer Service Agent for ${COMPANY_NAME}.
   
   ONLY Use the provided database for accurate information to customers:
   *********DATABASE START*********
@@ -150,7 +156,7 @@ fastify.register(async (fastify) => {
         item: {
           type: 'message',
           role: 'user',
-          content: [{ type: 'input_text', text: 'Hello How can I help you?"' }]
+          content: [{ type: 'input_text', text: "Start the conversation with exactly this : "+INIT_PROMPT }]
         }
       };
       if (SHOW_TIMING_MATH)
